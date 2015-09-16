@@ -28,6 +28,7 @@ describe Fanficmd::Markdown do
       {line: "Я решил идти в обитель бога"},
       {line: "Против воли всех небесных рек."}
     ]
+
     begin
       expect(markdown.parse(str)).to eq arr
     rescue Parslet::ParseFailed => failure
@@ -35,5 +36,6 @@ describe Fanficmd::Markdown do
       raise Parslet::ParseFailed
     end
   end
+
 
 end
