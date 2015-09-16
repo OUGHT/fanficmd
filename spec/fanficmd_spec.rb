@@ -7,5 +7,6 @@ describe Fanficmd do
 
   it 'does stuff' do
     pending # no code yet
+    FANFICMD::Parse.string('lalala')
   end
 end

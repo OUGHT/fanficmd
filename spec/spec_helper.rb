@@ -4,3 +4,12 @@ require 'coveralls'
 Coveralls.wear!
 require 'pry'
 require 'fanficmd'
+require 'pp'
+
+class String
+  def strip_h(char = '')
+    match = "^\s+#{char}"
+    regexp = Regexp.new(match)
+    self.gsub(regexp, '')
+  end
+end
