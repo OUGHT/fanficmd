@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'markdown'
+require 'parslet/convenience'
 
 describe Fanficmd::Markdown do
   let(:markdown) { Fanficmd::Markdown.new }
@@ -29,12 +30,7 @@ describe Fanficmd::Markdown do
       {line: "Против воли всех небесных рек."}
     ]
 
-    begin
-      expect(markdown.parse(str)).to eq arr
-    rescue Parslet::ParseFailed => failure
-      puts failure.cause.ascii_tree
-      raise Parslet::ParseFailed
-    end
+    expect(markdown.parse(str)).to eq arr
   end
 
   it 'can parse horizontal rulers' do
@@ -51,16 +47,38 @@ describe Fanficmd::Markdown do
       |Гимн хакеров, русский вариант.
       |***
       | ---------     
+      |  _ _     _ _______ __________
+      | * **
+      | -- -   
+      |   *** * *
+      | ******** *
       |    ___________________
+      |*-*
     EOF
-    pp str
-    begin
-      pp(markdown.parse(str))
-    rescue Parslet::ParseFailed => failure
-      puts failure.cause.ascii_tree
-      raise Parslet::ParseFailed
-    end
 
+    arr = [
+      {line:  "Наша работа во тьме —"},
+      {line:  "Мы делаем, что умеем,"},
+      {line:  "Мы отдаём, что имеем —"},
+      {line:  "Наша работа — во тьме."},
+      {line:  "Сомнения стали страстью,"},
+      {line:  "А страсть стала судьбой."},
+      {line:  "Всё остальное — искусство"},
+      {line:  "В безумии быть собой."},
+      {line:  ""},
+      {line:  "Гимн хакеров, русский вариант."},
+      {hruler:"***"},
+      {hruler:" ---------     "},
+      {hruler:"  _ _     _ _______ __________"},
+      {hruler:" * **"},
+      {hruler:" -- -   "},
+      {hruler:"   *** * *"},
+      {hruler:" ******** *"},
+      {line:  "    ___________________"},
+      {line:  "*-*"}
+    ]
+
+    expect(markdown.parse(str)).to eq arr
   end
 
 

@@ -4,9 +4,4 @@ describe Fanficmd do
   it 'has a version number' do
     expect(Fanficmd::VERSION).not_to be nil
   end
-
-  it 'does stuff' do
-    pending # no code yet
-    FANFICMD::Parse.string('lalala')
-  end
 end

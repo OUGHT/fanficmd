@@ -3,27 +3,42 @@ require 'parslet'
 module Fanficmd
   class Markdown < Parslet::Parser
     # elementary rules
-    rule(:lend)     { str("\r") | str("\n") | str("\r\n") }
+    rule(:eol)      { str("\r") | str("\n") | str("\r\n") }
     rule(:lchar)    { match("[^\r\n]") }
     rule(:space)    { match(" ") }
     rule(:lspace)   { match("[[:blank:]]") }
     rule(:exspace)  { match("[[:space:]]") }
     rule(:eof)      { any.absent? }
-    rule(:leeof)    { lend | eof}
+    rule(:eolf)     { eol | eof}
 
     rule(:punct)    { match("[!\"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]") }
 
 
     # basic rules
-    rule(:sline)    { lspace.repeat(1).as(:line) >> leeof }
-    rule(:bline)    { str("").as(:line) >> lend }
+    rule(:sline)    { lspace.repeat(1).as(:line) >> eolf }
+    rule(:bline)    { str("").as(:line) >> eol }
     rule(:bsline)   { bline | sline }
-    rule(:line)     { lchar.repeat(1).as(:line) >> leeof }
+    rule(:line)     { lchar.repeat(1).as(:line) >> eolf }
     rule(:aline)    { bsline | line }
 
+    %w[* - _].each_with_index do |s, i|   # Черная магия. Не дышать!
+      rule("hruler#{i}") do 
+        space.repeat(0,3) >> 
+        (
+          str(s).repeat(3) >> match("[#{s} ]").repeat(0) |
 
-    rule(:bruler)   { str("*").repeat(3) | str("_").repeat(3) | str("-").repeat(3) } # TODO: Add whitespace
-    rule(:hruler)   { space.repeat(0,3) >> bruler.as(:hruler) >> space.repeat(0) >> lend }
+          str(s).repeat(2) >> space.repeat(0) >> str(s).repeat(1) >> 
+          space.repeat(0) >> match("[#{s} ]").repeat(0) |
+
+          str(s).repeat(1) >> space.repeat(0) >> str(s).repeat(2) >> 
+          space.repeat(0) >> match("[#{s} ]").repeat(0) |
+
+          str(s).repeat(1) >> space.repeat(0) >> str(s).repeat(1) >> space.repeat(0) >> 
+          str(s).repeat(1) >> space.repeat(0) >> match("[#{s} ]").repeat(0) 
+        )
+      end    
+    end
+    rule(:hruler)   { (hruler0 | hruler1 | hruler2).as(:hruler) >> eolf }
 
 
     # complex rules
