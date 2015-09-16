@@ -37,5 +37,31 @@ describe Fanficmd::Markdown do
     end
   end
 
+  it 'can parse horizontal rulers' do
+    str =<<-EOF.strip_h(true)
+      |Наша работа во тьме —
+      |Мы делаем, что умеем,
+      |Мы отдаём, что имеем —
+      |Наша работа — во тьме.
+      |Сомнения стали страстью,
+      |А страсть стала судьбой.
+      |Всё остальное — искусство
+      |В безумии быть собой.
+      |
+      |Гимн хакеров, русский вариант.
+      |***
+      | ---------     
+      |    ___________________
+    EOF
+    pp str
+    begin
+      pp(markdown.parse(str))
+    rescue Parslet::ParseFailed => failure
+      puts failure.cause.ascii_tree
+      raise Parslet::ParseFailed
+    end
+
+  end
+
 
 end

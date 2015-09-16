@@ -7,9 +7,8 @@ require 'fanficmd'
 require 'pp'
 
 class String
-  def strip_h(char = '')
-    match = "^\s+#{char}"
-    regexp = Regexp.new(match)
+  def strip_h(border = false)
+    regexp = border ? /^ +\|/ : /^ +/
     self.gsub(regexp, '')
   end
 end
