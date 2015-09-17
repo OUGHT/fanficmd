@@ -3,7 +3,7 @@ require 'parslet'
 module Fanficmd
   class Markdown < Parslet::Parser
     # elementary rules
-    rule(:eol)      { str("\r") | str("\n") | str("\r\n") }
+    rule(:eol)      { str("\r\n") | str("\r") | str("\n") }
     rule(:lchar)    { match("[^\r\n]") }
     rule(:space)    { match(" ") }
     rule(:lspace)   { match("[[:blank:]]") }

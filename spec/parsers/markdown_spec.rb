@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'markdown'
+require 'parsers/markdown'
 require 'parslet/convenience'
 
 describe Fanficmd::Markdown do
@@ -11,13 +11,12 @@ describe Fanficmd::Markdown do
 
   it 'can parse text into lines' do
     str =<<-EOF.strip_h
-      Кто даст мне покой,
+      Кто даст мне покой,\r
       Подарит свет?
       Божий сын казнен,
       Ответа нет.
 
-      Я решил идти в обитель бога
-      Против воли всех небесных рек.
+      Я решил идти в обитель бога\rПротив воли всех небесных рек.
     EOF
 
     arr = [
@@ -80,6 +79,4 @@ describe Fanficmd::Markdown do
 
     expect(markdown.parse(str)).to eq arr
   end
-
-
 end

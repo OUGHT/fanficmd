@@ -11,4 +11,9 @@ class String
     regexp = border ? /^ +\|/ : /^ +/
     self.gsub(regexp, '')
   end
+
+  def strip_n
+    regexp = /[\r\n]/
+    self.gsub(regexp, '')
+  end 
 end
